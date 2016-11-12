@@ -1,0 +1,39 @@
+<idea-plugin version="2">
+    <id>com.github.jpmossin</id>
+    <name>plugintest</name>
+    <version>1.0</version>
+    <vendor url="https://github.com/jpmossin">jpmossin</vendor>
+    <category>Navigation</category>
+
+    <description><![CDATA[
+      Hello!
+    ]]></description>
+    
+    <depends>com.intellij.modules.platform</depends>
+ 
+    <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="2016.2" until-build="2016.2"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <action id="plugintest.Textboxes" class="com.github.jpmossin.plugintest.CharJumpAction" text="Text _Boxes" description="A test menu item">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl SEMICOLON"/>  
+        </action>
+    </actions>
+
+</idea-plugin>
