@@ -3,6 +3,7 @@ package com.github.jpmossin.plugintest
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 
+
 class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, project: Project, editor: Editor) {
 
   private val highlighter = new PositionHighlighter(project, editor)
@@ -21,9 +22,10 @@ class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, project: Project, e
 
   private def highlightMatchingPositions(positionKeys: Map[Int, Seq[Char]]): Unit = {
     if (positionKeys.nonEmpty) {
-      val highlightState = highlighter.showMatchingPositions(positionKeys)
+      val nextCharsToShow = positionKeys.mapValues(_.head)
+      highlighter.showMatchingPositions(nextCharsToShow)
       keyPressedHandler.setKeyPressedListener(pressedChar => {
-        highlighter.resetPrevious(highlightState)
+        highlighter.clearCurrentHighlighting()
         jumpOrHighlightRemaining(positionKeys, pressedChar)
       })
     }
@@ -34,16 +36,22 @@ class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, project: Project, e
     val forPressedChar = byFirstChar.getOrElse(pressedChar, Map())
     val singleMatchingPosition = forPressedChar.find({ case (pos, chars) => chars.size == 1})
     singleMatchingPosition match {
-      case Some((pos, chars)) => finishJump(pos)
+      case Some((pos, chars)) => jump(pos)
       case _ =>
         val nextJumpChars = forPressedChar.mapValues(_.tail)
-        highlightMatchingPositions(nextJumpChars)
+        if (nextJumpChars.nonEmpty) highlightMatchingPositions(nextJumpChars)
+        else stop()
     }
   }
 
-  def finishJump(position: Int): Unit = {
-    keyPressedHandler.removeKeyPressedListener()
+  def jump(position: Int): Unit = {
+    stop()
     editor.getCaretModel.moveToOffset(position)
+  }
+
+  def stop(): Unit = {
+    keyPressedHandler.removeKeyPressedListener()
+    highlighter.clearCurrentHighlighting()
   }
 
 }

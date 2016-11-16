@@ -1,56 +1,57 @@
 package com.github.jpmossin.plugintest
 
-import java.awt.{Color, Font}
+import java.awt.Point
+import javax.swing.SwingUtilities
 
-import com.github.jpmossin.plugintest.PositionHighlighter._
-import com.intellij.openapi.command.WriteCommandAction
-import com.intellij.openapi.editor.{Document, Editor}
-import com.intellij.openapi.editor.markup.{HighlighterLayer, HighlighterTargetArea, RangeHighlighter, TextAttributes}
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.util.Computable
+import com.intellij.ui.awt.RelativePoint
 
 /**
-  * Helper for highlighting matching positions in the document. 
+  * Helper for highlighting matching positions in the document.
   */
 class PositionHighlighter(project: Project, editor: Editor) {
 
-  def showMatchingPositions(matchingPositions: Map[Int, Seq[Char]]): HighlightState = {
-    WriteCommandAction.runWriteCommandAction(project, new Computable[HighlightState] {
-      override def compute(): HighlightState = {
-        val document: Document = editor.getDocument
-        val originalChars = matchingPositions.keys.map(p => (p, document.getCharsSequence.charAt(p))).toMap
-        val rangeHighlighters = highlightPositions(matchingPositions)
-        HighlightState(rangeHighlighters, originalChars)
+  var lastShownTargetCanvas: Option[JumpTargetsCanvas] = None
+
+  def showMatchingPositions(matchingPositions: Map[Int, Char]): Unit = {
+    ApplicationManager.getApplication.invokeLater(new Runnable {
+      override def run(): Unit = {
+        val targetPoints = matchingPositions.map({case (pos, char) => (offsetToPoint(pos), char)})
+        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints, editor))
+        addTargetCanvas(lastShownTargetCanvas.get)
       }
     })
   }
 
-  def resetPrevious(previous: HighlightState): Unit = {
-    previous.rangeHighlighters.foreach(_.dispose())
-    previous.replacedChars.foreach({ case (pos, chr) =>
-      editor.getDocument.replaceString(pos, pos + 1, chr + "")
-    })
+  def clearCurrentHighlighting(): Unit = {
+    lastShownTargetCanvas.foreach(removeTargetCanvas)
+    lastShownTargetCanvas = None
   }
 
-  private def highlightPositions(matchingPositions: Map[Int, Seq[Char]]): Seq[RangeHighlighter] = {
-    matchingPositions.map({ case (pos, chars) =>
-      highlightPosition(pos, chars.head)
-    }).toSeq
+  private def offsetToPoint(offset: Int): Point = {
+    val visualPosition = editor.offsetToVisualPosition(offset)
+    val relativePoint = new RelativePoint(editor.getContentComponent, editor.visualPositionToXY(visualPosition))
+    relativePoint.getOriginalPoint
   }
 
-  private def highlightPosition(pos: Int, jumpChar: Char) = {
-    editor.getDocument.replaceString(pos, pos + 1, jumpChar.toString.toUpperCase)
-    editor.getMarkupModel.addRangeHighlighter(pos, pos + 1,
-      HighlighterLayer.LAST, highlightAttributes, HighlighterTargetArea.EXACT_RANGE)
+  private def addTargetCanvas(targetCanvas: JumpTargetsCanvas): Unit = {
+    val contentComponent = editor.getContentComponent
+    contentComponent.add(targetCanvas)
+    val viewport = editor.asInstanceOf[EditorEx].getScrollPane.getViewport
+    targetCanvas.setBounds(0, 0, viewport.getWidth, viewport.getHeight)
+    val rootPane = editor.getComponent.getRootPane
+    val locationOnScreen = SwingUtilities.convertPoint(targetCanvas, targetCanvas.getLocation(), rootPane)
+    targetCanvas.setLocation(-locationOnScreen.x, -locationOnScreen.y)
+    contentComponent.repaint()
   }
 
-}
-
-
-object PositionHighlighter {
-
-  private val highlightAttributes = new TextAttributes(Color.BLACK, Color.LIGHT_GRAY, null, null, Font.BOLD)
-
-  case class HighlightState(rangeHighlighters: Seq[RangeHighlighter], replacedChars: Map[Int, Char])
+  private def removeTargetCanvas(targetCanvas: JumpTargetsCanvas): Unit = {
+    val contentComponent = editor.getContentComponent
+    contentComponent.remove(targetCanvas)
+    contentComponent.repaint()
+  }
 
 }

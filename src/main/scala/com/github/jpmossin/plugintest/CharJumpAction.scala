@@ -4,14 +4,19 @@ import com.github.jpmossin.plugintest.CharJumpAction._
 import com.intellij.openapi.actionSystem.{AnAction, AnActionEvent, CommonDataKeys}
 import com.intellij.openapi.editor.actionSystem.EditorActionManager
 
-class CharJumpAction extends AnAction("Scala!") {
-  
+class CharJumpAction extends AnAction("CharJump") {
+
+  private var lastSearch: Option[SearchRunner] = None
+
   override def actionPerformed(event: AnActionEvent): Unit = {
+    lastSearch.foreach(_.stop())
     val project = event.getData(CommonDataKeys.PROJECT)
     val editor = event.getData(CommonDataKeys.EDITOR)
-    new SearchRunner(keyPressedHandler, project, editor).runSearch()
+    val searchRunner = new SearchRunner(keyPressedHandler, project, editor)
+    searchRunner.runSearch()
+    lastSearch = Some(searchRunner)
   }
-  
+
 }
 
 object CharJumpAction {

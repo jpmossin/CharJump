@@ -8,9 +8,9 @@
     <description><![CDATA[
       Hello!
     ]]></description>
-    
+
     <depends>com.intellij.modules.platform</depends>
- 
+
     <change-notes><![CDATA[
       Add change notes here.<br>
       <em>most HTML tags may be used</em>
@@ -32,7 +32,7 @@
 
     <actions>
         <action id="plugintest.Textboxes" class="com.github.jpmossin.plugintest.CharJumpAction" text="Text _Boxes" description="A test menu item">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl SEMICOLON"/>  
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl COMMA"/>
         </action>
     </actions>
 

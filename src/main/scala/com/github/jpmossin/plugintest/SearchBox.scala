@@ -11,6 +11,9 @@ import com.intellij.openapi.util.SystemInfo
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.ui.popup.AbstractPopup
 
+/**
+  * Displays a small popup box for capturing the search input
+  */
 class SearchBox(editor: Editor, keyPressedHandler: Char => Unit) extends JTextField {
 
   private val popup = createPopup()

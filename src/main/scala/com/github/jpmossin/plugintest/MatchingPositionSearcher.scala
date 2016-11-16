@@ -45,20 +45,8 @@ class MatchingPositionSearcher(editor: Editor) {
 
 object MatchingPositionSearcher {
 
-  def main(args: Array[String]): Unit = {
-    for (i <- 1 to 100000) {
-      pos2Keys(i) match {
-        case List('o') => println(i)
-        case List('p', 'a') => println(i)
-        case List('w', 'w') => println(i)
-        case List('x', 'a', 'a') => println(i)
-        case _ =>
-      }
-    }
-  }
-
   // Map each of the matching positions to the sequence of characters
-  // that must be typed to jump to the respective position 
+  // that must be typed to jump to the respective position
   private def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
     var currentIndex = 0
     var jumpKeys = List[List[Char]]()
@@ -74,7 +62,7 @@ object MatchingPositionSearcher {
 
     positions.zip(jumpKeys.reverse).toMap
   }
-  
+
 
   private def pos2Keys(pos: Int): List[Char] = {
     if (pos < 26) {
