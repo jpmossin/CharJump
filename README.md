@@ -1,9 +1,9 @@
 ## CharJump
 
-A plugin for quickly jumping to any visible character in the active document.
+A IntelliJ plugin for quickly jumping to any visible character in the active document.
 
 Inspired by and similar to https://github.com/johnlindquist/AceJump, but with a stronger focus on
-making jumping to a specific character/position as easy as possible.
+making jumping to a specific character/position as easy and fast as possible.
 
 Should work in all editors based on the Intellij platform. 
 Install by searching for "CharJump" in the Plugins dialog, or unzip a
@@ -14,6 +14,8 @@ Install by searching for "CharJump" in the Plugins dialog, or unzip a
 ##### Usage
 Activate with Ctrl+Comma (configurable) and enter the character for the position you wish to jump to. 
 A single-character label will then be shown for each matching position in the document.
+
+![charjump.png](https://bitbucket.org/repo/gd5gG5/images/3288821053-charjump.png)
 
 After entering a target character, the jump can be aborted by pressing Space.  
 
