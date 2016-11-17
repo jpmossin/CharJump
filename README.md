@@ -17,6 +17,10 @@ A single-character label will then be shown for each matching position in the do
 
 ![charjump.png](https://bitbucket.org/repo/gd5gG5/images/3288821053-charjump.png)
 
+Positions close to the current caret position can be reached by a single character,
+while a two or three characters are needed for positions further away when there are
+many matching positions.
+ 
 After entering a target character, the jump can be aborted by pressing Space.  
 
 ##### Development
