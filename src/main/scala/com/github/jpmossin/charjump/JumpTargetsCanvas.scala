@@ -1,4 +1,4 @@
-package com.github.jpmossin.plugintest
+package com.github.jpmossin.charjump
 
 import java.awt._
 import javax.swing.JComponent

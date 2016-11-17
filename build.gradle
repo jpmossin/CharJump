@@ -26,14 +26,12 @@ dependencies {
 
 intellij {
     version ideaVersion
-    pluginName 'plugintest'
-//    downloadSources Boolean.valueOf(sources)
-//    localPath = "/home/jp/tools/intellij/idea-IC-162.2228.15"
-    
+    pluginName 'CharJump'
+
 //    publish {
 //        username 'zolotov'
 //        password 'password'
 //        channel 'nightly'
 //    }
-    
+
 }

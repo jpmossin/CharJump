@@ -1,6 +1,6 @@
-package com.github.jpmossin.plugintest
+package com.github.jpmossin.charjump
 
-import com.github.jpmossin.plugintest.MatchingPositionSearcher._
+import com.github.jpmossin.charjump.MatchingPositionSearcher._
 import com.intellij.openapi.editor.{Editor, VisualPosition}
 
 /**

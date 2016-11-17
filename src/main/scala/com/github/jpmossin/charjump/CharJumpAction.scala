@@ -1,6 +1,6 @@
-package com.github.jpmossin.plugintest
+package com.github.jpmossin.charjump
 
-import com.github.jpmossin.plugintest.CharJumpAction._
+import com.github.jpmossin.charjump.CharJumpAction._
 import com.intellij.openapi.actionSystem.{AnAction, AnActionEvent, CommonDataKeys}
 import com.intellij.openapi.editor.actionSystem.EditorActionManager
 
@@ -15,7 +15,6 @@ class CharJumpAction extends AnAction("CharJump") {
     searchRunner.runSearch()
     lastSearch = Some(searchRunner)
   }
-
 }
 
 object CharJumpAction {

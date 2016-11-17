@@ -1,4 +1,4 @@
-package com.github.jpmossin.plugintest
+package com.github.jpmossin.charjump
 
 import java.awt.event._
 import java.awt.{Dimension, Font, Graphics}
@@ -23,6 +23,12 @@ class SearchBox(editor: Editor, keyPressedHandler: Char => Unit) extends JTextFi
     popup.show(guessBestLocation())
     popup.setRequestFocus(true)
     requestFocus()
+
+    addKeyListener(new KeyAdapter {
+      override def keyPressed(e: KeyEvent): Unit = {
+        println("keypressed: " + e.getKeyCode)
+      }
+    })
   }
 
   private def createPopup() = {

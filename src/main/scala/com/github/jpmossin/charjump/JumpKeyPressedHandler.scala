@@ -1,4 +1,4 @@
-package com.github.jpmossin.plugintest
+package com.github.jpmossin.charjump
 
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.editor.Editor
