@@ -6,13 +6,14 @@ import javax.swing.SwingUtilities
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.ex.EditorEx
+import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.openapi.project.Project
 import com.intellij.ui.awt.RelativePoint
 
 /**
   * Helper for highlighting matching positions in the document.
   */
-class PositionHighlighter(project: Project, editor: Editor) {
+class PositionHighlighter(editor: Editor) {
 
   var lastShownTargetCanvas: Option[JumpTargetsCanvas] = None
 
@@ -20,7 +21,7 @@ class PositionHighlighter(project: Project, editor: Editor) {
     ApplicationManager.getApplication.invokeLater(new Runnable {
       override def run(): Unit = {
         val targetPoints = matchingPositions.map({case (pos, char) => (offsetToPoint(pos), char)})
-        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints, editor))
+        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints, editor.asInstanceOf[EditorImpl]))
         addTargetCanvas(lastShownTargetCanvas.get)
       }
     })
@@ -41,7 +42,7 @@ class PositionHighlighter(project: Project, editor: Editor) {
     val contentComponent = editor.getContentComponent
     contentComponent.add(targetCanvas)
     val viewport = editor.asInstanceOf[EditorEx].getScrollPane.getViewport
-    targetCanvas.setBounds(0, 0, viewport.getWidth, viewport.getHeight)
+    targetCanvas.setBounds(0, 0, viewport.getRootPane.getWidth, viewport.getRootPane.getHeight)
     val rootPane = editor.getComponent.getRootPane
     val locationOnScreen = SwingUtilities.convertPoint(targetCanvas, targetCanvas.getLocation(), rootPane)
     targetCanvas.setLocation(-locationOnScreen.x, -locationOnScreen.y)

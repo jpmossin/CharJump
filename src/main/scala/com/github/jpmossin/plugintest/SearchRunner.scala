@@ -1,12 +1,11 @@
 package com.github.jpmossin.plugintest
 
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.project.Project
 
 
-class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, project: Project, editor: Editor) {
+class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
 
-  private val highlighter = new PositionHighlighter(project, editor)
+  private val highlighter = new PositionHighlighter(editor)
 
   def runSearch(): Unit = {
     val searchBox = new SearchBox(editor, onSearchKeyPressed)

@@ -10,9 +10,8 @@ class CharJumpAction extends AnAction("CharJump") {
 
   override def actionPerformed(event: AnActionEvent): Unit = {
     lastSearch.foreach(_.stop())
-    val project = event.getData(CommonDataKeys.PROJECT)
     val editor = event.getData(CommonDataKeys.EDITOR)
-    val searchRunner = new SearchRunner(keyPressedHandler, project, editor)
+    val searchRunner = new SearchRunner(keyPressedHandler, editor)
     searchRunner.runSearch()
     lastSearch = Some(searchRunner)
   }
