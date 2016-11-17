@@ -12,9 +12,10 @@ Install by searching for "CharJump" in the Plugins dialog, or unzip a
 
 
 ##### Usage
-Activate with Ctrl+Comma (configurable) and enter the character for the position you wish to jump to. 
-A single-character label will then be shown for each matching position in the document.
+Activate with Ctrl+Comma (configurable) and enter the character for the position you wish to jump to.
+A single-character label will then be shown for each matching position in the document. <br>
 
+The below image shows an example of searching for "o", with the caret located at line 23: <br>
 ![charjump.png](https://bitbucket.org/repo/gd5gG5/images/3288821053-charjump.png)
 
 Positions close to the current caret position can be reached by a single character,
