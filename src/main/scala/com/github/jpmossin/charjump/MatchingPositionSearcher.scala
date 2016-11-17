@@ -9,14 +9,21 @@ import com.intellij.openapi.editor.{Editor, VisualPosition}
   */
 class MatchingPositionSearcher(editor: Editor) {
 
-
-  def getKeysForMatchingPositions(keyChar: Char, documentChars: CharSequence): Map[Int, Seq[Char]] = {
+  /**
+    * Find all positions in the currently visible area of the editor
+    * matching the given searchChar, and return a map of:
+    * (position -> sequence of chars to press for jumping to position)
+    */
+  def getKeysForMatchingPositions(searchChar: Char): Map[Int, Seq[Char]] = {
+    val caretOffset = editor.getCaretModel.getCurrentCaret.getOffset
     val (startOffset, endOffset) = currentVisibleOffsets()
-    val keyCharLow = keyChar.toLower
-    val matchingPositions = documentChars.subSequence(startOffset, endOffset).toString
+    val keyCharLow = searchChar.toLower
+    val matchingPositions = editor.getDocument.getCharsSequence
+      .subSequence(startOffset, endOffset).toString
       .zipWithIndex
-      .filter({ case (chr, position) => chr.toLower == keyCharLow })
-      .map({ case (chr, pos) => pos + startOffset })
+      .filter({ case (chr, index) => chr.toLower == keyCharLow })
+      .map({ case (chr, index) => index + startOffset })
+      .sortBy(relativeOffset => Math.abs(relativeOffset - caretOffset))  // Simple heuristic for prefering single-key jumps for the closest positions.
     mapPositionsToJumpKeys(matchingPositions)
   }
 
@@ -45,8 +52,8 @@ class MatchingPositionSearcher(editor: Editor) {
 
 object MatchingPositionSearcher {
 
-  // Map each of the matching positions to the sequence of characters
-  // that must be typed to jump to the respective position
+  // Map each of the given positions to a unique sequence of characters
+  // that must be typed to jump to the respective position.
   private def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
     var currentIndex = 0
     var jumpKeys = List[List[Char]]()

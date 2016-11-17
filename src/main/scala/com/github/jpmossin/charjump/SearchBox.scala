@@ -23,12 +23,6 @@ class SearchBox(editor: Editor, keyPressedHandler: Char => Unit) extends JTextFi
     popup.show(guessBestLocation())
     popup.setRequestFocus(true)
     requestFocus()
-
-    addKeyListener(new KeyAdapter {
-      override def keyPressed(e: KeyEvent): Unit = {
-        println("keypressed: " + e.getKeyCode)
-      }
-    })
   }
 
   private def createPopup() = {
