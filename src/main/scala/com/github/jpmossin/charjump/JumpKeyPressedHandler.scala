@@ -7,9 +7,9 @@ import com.intellij.openapi.editor.actionSystem.TypedActionHandler
 /**
   * This class hooks on to the chain of TypedActionHandlers that are executed
   * on keypress in an editor. It will either forward the typed key to
-  * a registered listener, or pass on the event to the next handler in the chain.
+  * a registered listener, or pass on the event to the given next handler in the chain.
   */
-class JumpKeyPressedHandler(previousHandler: TypedActionHandler) extends TypedActionHandler {
+class JumpKeyPressedHandler(nextHandler: TypedActionHandler) extends TypedActionHandler {
 
   type KeyPressedListener = Char => Unit
 
@@ -18,7 +18,7 @@ class JumpKeyPressedHandler(previousHandler: TypedActionHandler) extends TypedAc
   override def execute(editor: Editor, charTyped: Char, dataContext: DataContext): Unit = {
     keyPressedListener match {
       case Some(listener) => listener(charTyped)
-      case None => previousHandler.execute(editor, charTyped, dataContext)
+      case None => nextHandler.execute(editor, charTyped, dataContext)
     }
   }
 

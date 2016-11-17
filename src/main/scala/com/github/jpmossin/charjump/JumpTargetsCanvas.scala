@@ -3,14 +3,17 @@ package com.github.jpmossin.charjump
 import java.awt._
 import javax.swing.JComponent
 
-import com.intellij.openapi.editor.colors.{EditorColorsManager, EditorFontType}
+import com.intellij.openapi.editor.colors.EditorFontType
 import com.intellij.openapi.editor.impl.EditorImpl
 
 /**
+  * A JComponent that draws a character label for each of
+  * the given (Point, Char) pairs. It uses the current editor font settings to try
+  * to draw the labels in such a way that they appear to replace the actual characters.
   *
-  * note: we actually need an EditorImpl and not an Editor, to get some font info.
+  * (note: we actually need an EditorImpl and not an Editor, to get some font info.)
   */
-class JumpTargetsCanvas(charsToPosition: Map[Point, Char], editor: EditorImpl) extends JComponent {
+class JumpTargetsCanvas(charsToPosition: Seq[(Point, Char)], editor: EditorImpl) extends JComponent {
 
   private val editorFont = editor.getColorsScheme.getFont(EditorFontType.BOLD)
   private val lineHeight = editor.getLineHeight
@@ -27,7 +30,7 @@ class JumpTargetsCanvas(charsToPosition: Map[Point, Char], editor: EditorImpl) e
   }
 
   def drawChar(g2d: Graphics2D, jumpChar: Char, position: Point): Unit = {
-    g2d.setColor(Color.WHITE)
+    g2d.setColor(editor.getBackgroundColor)
     g2d.fillRect(position.x, position.y, charWidth, lineHeight + 1)
     g2d.setColor(Color.RED)
     g2d.drawString(jumpChar.toString, position.x, position.y + editorFont.getSize)

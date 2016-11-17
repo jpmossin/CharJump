@@ -16,11 +16,16 @@ class PositionHighlighter(editor: Editor) {
 
   var lastShownTargetCanvas: Option[JumpTargetsCanvas] = None
 
+  /**
+    * Create and show a JumpTargetsCanvas for displaying the given
+    * positions graphically in the editor.
+    */
   def showMatchingPositions(matchingPositions: Map[Int, Char]): Unit = {
+    clearCurrentHighlighting()
     ApplicationManager.getApplication.invokeLater(new Runnable {
       override def run(): Unit = {
         val targetPoints = matchingPositions.map({case (pos, char) => (offsetToPoint(pos), char)})
-        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints, editor.asInstanceOf[EditorImpl]))
+        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints.toSeq, editor.asInstanceOf[EditorImpl]))
         addTargetCanvas(lastShownTargetCanvas.get)
       }
     })
@@ -41,8 +46,8 @@ class PositionHighlighter(editor: Editor) {
     val contentComponent = editor.getContentComponent
     contentComponent.add(targetCanvas)
     val viewport = editor.asInstanceOf[EditorEx].getScrollPane.getViewport
-    targetCanvas.setBounds(0, 0, viewport.getRootPane.getWidth, viewport.getRootPane.getHeight)
     val rootPane = editor.getComponent.getRootPane
+    targetCanvas.setBounds(0, 0, rootPane.getWidth, rootPane.getHeight)
     val locationOnScreen = SwingUtilities.convertPoint(targetCanvas, targetCanvas.getLocation(), rootPane)
     targetCanvas.setLocation(-locationOnScreen.x, -locationOnScreen.y)
     contentComponent.repaint()

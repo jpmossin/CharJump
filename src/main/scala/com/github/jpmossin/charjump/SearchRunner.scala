@@ -13,9 +13,8 @@ class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
   }
 
   private def onSearchKeyPressed(searchKey: Char): Unit = {
-    val documentChars = editor.getDocument.getCharsSequence
     val positionSearcher = new MatchingPositionSearcher(editor)
-    val keysForMatchingPositions = positionSearcher.getKeysForMatchingPositions(searchKey, documentChars)
+    val keysForMatchingPositions = positionSearcher.getKeysForMatchingPositions(searchKey)
     highlightMatchingPositions(keysForMatchingPositions)
   }
 
