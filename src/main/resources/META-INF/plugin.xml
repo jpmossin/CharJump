@@ -19,8 +19,6 @@
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
   <idea-version since-build="2016.1" until-build="2016.2"/>
 
-  <depends>com.intellij.modules.lang</depends>
-
   <actions>
     <action id="CharJumpAction"
             class="com.github.jpmossin.charjump.CharJumpAction"
