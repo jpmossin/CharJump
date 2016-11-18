@@ -3,13 +3,30 @@ package com.github.jpmossin.charjump
 import com.intellij.openapi.editor.Editor
 
 
-class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
+/**
+  * The highlevel flow and logic of a single CharJump activation.
+  */
+class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
 
   private val highlighter = new PositionHighlighter(editor)
 
-  def runSearch(): Unit = {
+  /**
+    * Runs a new CharJump search by going through the following states:
+    * 1: Read the search character
+    * 2: Map each matching position to a sequence of characters
+    * 3: Read the next character typed by the user and filter the matching positions
+    * 4: - If only one remaining position: Jump!
+    *    - If no remaining positions, Stop!
+    *    - Else goto 3.
+    */
+  def runCharJump(): Unit = {
     val searchBox = new SearchBox(editor, onSearchKeyPressed)
     searchBox.setupAndShow()
+  }
+
+  def stop(): Unit = {
+    keyPressedHandler.removeKeyPressedListener()
+    highlighter.clearCurrentHighlighting()
   }
 
   private def onSearchKeyPressed(searchKey: Char): Unit = {
@@ -26,10 +43,12 @@ class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
         highlighter.clearCurrentHighlighting()
         jumpOrHighlightRemaining(positionKeys, pressedChar)
       })
+    } else {
+      stop()
     }
   }
 
-  def jumpOrHighlightRemaining(positionKeys: Map[Int, Seq[Char]], pressedChar: Char): Unit = {
+  private def jumpOrHighlightRemaining(positionKeys: Map[Int, Seq[Char]], pressedChar: Char): Unit = {
     val byFirstChar = positionKeys.groupBy({ case (_, jumpChars) => jumpChars.head })
     val forPressedChar = byFirstChar.getOrElse(pressedChar, Map())
     val singleMatchingPosition = forPressedChar.find({ case (pos, chars) => chars.size == 1})
@@ -42,14 +61,9 @@ class SearchRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
     }
   }
 
-  def jump(position: Int): Unit = {
+  private def jump(position: Int): Unit = {
     stop()
     editor.getCaretModel.moveToOffset(position)
-  }
-
-  def stop(): Unit = {
-    keyPressedHandler.removeKeyPressedListener()
-    highlighter.clearCurrentHighlighting()
   }
 
 }

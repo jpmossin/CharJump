@@ -6,14 +6,17 @@ import com.intellij.openapi.editor.actionSystem.EditorActionManager
 
 class CharJumpAction extends AnAction("CharJump") {
 
-  private var lastSearch: Option[SearchRunner] = None
+  private var currentCharJump: Option[CharJumpRunner] = None
 
+  /**
+    * The entry point for when the user activates CharJump.
+    */
   override def actionPerformed(event: AnActionEvent): Unit = {
-    lastSearch.foreach(_.stop())
+    currentCharJump.foreach(_.stop())
     val editor = event.getData(CommonDataKeys.EDITOR)
-    val searchRunner = new SearchRunner(keyPressedHandler, editor)
-    searchRunner.runSearch()
-    lastSearch = Some(searchRunner)
+    val charJumpRunner = new CharJumpRunner(keyPressedHandler, editor)
+    charJumpRunner.runCharJump()
+    currentCharJump = Some(charJumpRunner)
   }
 }
 

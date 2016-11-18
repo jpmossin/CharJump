@@ -5,7 +5,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler
 
 /**
-  * This class hooks on to the chain of TypedActionHandlers that are executed
+  * This class can be hooked on to the chain of TypedActionHandlers that are executed
   * on keypress in an editor. It will either forward the typed key to
   * a registered listener, or pass on the event to the given next handler in the chain.
   */
