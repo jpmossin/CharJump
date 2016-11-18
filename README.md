@@ -1,6 +1,6 @@
 ## CharJump
 
-A IntelliJ plugin for quickly jumping to any visible character in the active document.
+An IntelliJ plugin for quickly jumping to any visible character in the active document.
 
 Inspired by and similar to https://github.com/johnlindquist/AceJump, but with a stronger focus on
 making jumping to a specific character/position as easy and fast as possible.
@@ -16,7 +16,7 @@ Activate with Ctrl+Comma (configurable) and enter the character for the position
 A single-character label will then be shown for each matching position in the document. <br>
 
 The below image shows an example of searching for "o", with the caret located at line 23: <br>
-![charjump.png](https://bitbucket.org/repo/gd5gG5/images/3288821053-charjump.png)
+![charjump.png](https://github.com/jpmossin/CharJump/raw/master/charjump.png)
 
 Positions close to the current caret position can be reached by a single character,
 while a two (or in extreme cases three) characters are needed for positions further away when there are
