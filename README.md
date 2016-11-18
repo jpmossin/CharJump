@@ -19,7 +19,7 @@ The below image shows an example of searching for "o", with the caret located at
 ![charjump.png](https://bitbucket.org/repo/gd5gG5/images/3288821053-charjump.png)
 
 Positions close to the current caret position can be reached by a single character,
-while a two or three characters are needed for positions further away when there are
+while a two (or in extreme cases three) characters are needed for positions further away when there are
 many matching positions.
  
 After entering a target character, the jump can be aborted by pressing Space.  
