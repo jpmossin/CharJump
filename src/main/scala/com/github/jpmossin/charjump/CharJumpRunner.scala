@@ -55,9 +55,8 @@ class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
     singleMatchingPosition match {
       case Some((pos, chars)) => jump(pos)
       case _ =>
-        val nextJumpChars = forPressedChar.mapValues(_.tail)
-        if (nextJumpChars.nonEmpty) highlightMatchingPositions(nextJumpChars)
-        else stop()
+        val remainingJumpChars = forPressedChar.mapValues(_.tail)
+        highlightMatchingPositions(remainingJumpChars)
     }
   }
 
