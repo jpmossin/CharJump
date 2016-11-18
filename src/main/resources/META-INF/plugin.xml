@@ -24,7 +24,7 @@
             class="com.github.jpmossin.charjump.CharJumpAction"
             text="CharJump"
             description="Activate CharJump">
-      <keyboard-shortcut keymap="$default" first-keystroke="ctrl COMMA"/>
+      <keyboard-shortcut keymap="$default" first-keystroke="alt COMMA"/>
     </action>
   </actions>
 
