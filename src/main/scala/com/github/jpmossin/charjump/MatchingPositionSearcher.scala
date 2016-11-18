@@ -14,7 +14,12 @@ class MatchingPositionSearcher(editor: Editor) {
     * matching the given searchChar, and return a map of:
     * (position -> sequence of chars to press for jumping to position)
     */
-  def getKeysForMatchingPositions(searchChar: Char): Map[Int, Seq[Char]] = {
+  def u(searchChar: Char): Map[Int, Seq[Char]] = {
+    val matchingPositions = findAndSortMatchingPositions(searchChar)
+    mapPositionsToJumpKeys(matchingPositions)
+  }
+
+  private def findAndSortMatchingPositions(searchChar: Char) = {
     val caretOffset = editor.getCaretModel.getCurrentCaret.getOffset
     val (startOffset, endOffset) = currentVisibleOffsets()
     val keyCharLow = searchChar.toLower
@@ -24,7 +29,7 @@ class MatchingPositionSearcher(editor: Editor) {
       .filter({ case (chr, index) => chr.toLower == keyCharLow })
       .map({ case (chr, index) => index + startOffset })
       .sortBy(relativeOffset => Math.abs(relativeOffset - caretOffset)) // Simple heuristic for prefering single-key jumps for the closest positions.
-    mapPositionsToJumpKeys(matchingPositions)
+    matchingPositions
   }
 
   private def currentVisibleOffsets(): (Int, Int) = {
@@ -52,7 +57,7 @@ class MatchingPositionSearcher(editor: Editor) {
 
 object MatchingPositionSearcher {
 
-  val azAZ = (('a' to 'z') ++ ('A' to 'Z')).toArray
+  val azAZ: IndexedSeq[Char] = ('a' to 'z') ++ ('A' to 'Z')
 
   // Map each of the given positions to a unique sequence of characters
   // that must be typed to jump to the respective position.
