@@ -1,11 +1,10 @@
-B1;3409;0c*~
+*~
 *#
 .idea
 build
 .build
 .gradle
 out
-*.log
 *.class
 classes
 
