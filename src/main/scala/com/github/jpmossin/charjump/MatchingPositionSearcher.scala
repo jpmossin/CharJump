@@ -14,7 +14,7 @@ class MatchingPositionSearcher(editor: Editor) {
     * matching the given searchChar, and return a map of:
     * (position -> sequence of chars to press for jumping to position)
     */
-  def u(searchChar: Char): Map[Int, Seq[Char]] = {
+  def getKeysForMatchingPositions(searchChar: Char): Map[Int, Seq[Char]] = {
     val matchingPositions = findAndSortMatchingPositions(searchChar)
     mapPositionsToJumpKeys(matchingPositions)
   }

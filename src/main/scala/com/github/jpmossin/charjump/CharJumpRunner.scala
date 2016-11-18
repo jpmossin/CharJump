@@ -13,7 +13,7 @@ class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
   /**
     * Runs a new CharJump search by going through the following states:
     * 1: Read the search character
-    * 2: Map each matching position to a sequence of characters
+    * 2: Map each matching position in the editor's document to a unique sequence of characters
     * 3: Read the next character typed by the user and filter the matching positions
     * 4: - If only one remaining position: Jump!
     *    - If no remaining positions, Stop!
