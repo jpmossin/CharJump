@@ -6,8 +6,7 @@ Inspired by and similar to https://github.com/johnlindquist/AceJump, but with a 
 making jumping to a specific character/position as easy and fast as possible.
 
 Should work in all editors based on the Intellij platform. 
-Install by unzipping a [distribution](https://github.com/jpmossin/charjump/releases) into your plugins folder, e.g ~/.IntelliJIdea2016.2/config/plugins/ (Will be available through the standard Jetbrains plugin repo once the plugin
-has been approved by Jetbrains).
+Install through the standard jetbrains [plugin repo](https://www.jetbrains.com/help/idea/2016.2/installing-updating-and-uninstalling-repository-plugins.html#install) by searching for CharJump, or by unzipping a [distribution](https://github.com/jpmossin/charjump/releases) into your plugins folder, e.g ~/.IntelliJIdea2016.2/config/plugins/.
 
 
 ##### Usage
