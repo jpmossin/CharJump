@@ -14,9 +14,11 @@ class CharJumpAction extends AnAction("CharJump") {
   override def actionPerformed(event: AnActionEvent): Unit = {
     currentCharJump.foreach(_.stop())
     val editor = event.getData(CommonDataKeys.EDITOR)
-    val charJumpRunner = new CharJumpRunner(keyPressedHandler, editor)
-    charJumpRunner.runCharJump()
-    currentCharJump = Some(charJumpRunner)
+    if (editor != null) {
+      val charJumpRunner = new CharJumpRunner(keyPressedHandler, editor)
+      charJumpRunner.runCharJump()
+      currentCharJump = Some(charJumpRunner)
+    }
   }
 }
 
