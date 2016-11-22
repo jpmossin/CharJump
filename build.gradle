@@ -24,6 +24,7 @@ dependencies {
 }
 
 intellij {
+  updateSinceUntilBuild = false
   version IDEA_VERSION
   pluginName 'CharJump'
   downloadSources Boolean.valueOf(DOWNLOAD_SOURCES)
