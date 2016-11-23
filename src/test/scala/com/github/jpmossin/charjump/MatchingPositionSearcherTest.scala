@@ -1,12 +1,15 @@
 package com.github.jpmossin.charjump
 
+import org.junit.runner.RunWith
 import org.scalatest.FunSuite
+import org.scalatest.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class MatchingPositionSearcherTest extends FunSuite {
 
   test("All lower case letters are included as single char jumps") {
     val jumpKeys = MatchingPositionSearcher.mapPositionsToJumpKeys(0 to 25)
-    assert(jumpKeys.values.toSet.flatten -- ('a' to 'z') == Set.empty)
+    assert(jumpKeys.values.toSet.flatten === ('a' to 'z').toSet)
   }
 
   test("All generated jump sequences are unique") {
@@ -24,9 +27,9 @@ class MatchingPositionSearcherTest extends FunSuite {
     // Compute the first char for the sequences of length 1, 2, and 3
     // These sets should all be disjoint with each other.
     val firstChars = jumpSeqByLength.mapValues(seqs => seqs.map(_.head).toSet)
-    assert((firstChars(0) intersect firstChars(1)).isEmpty)
-    assert((firstChars(0) intersect firstChars(2)).isEmpty)
     assert((firstChars(1) intersect firstChars(2)).isEmpty)
+    assert((firstChars(1) intersect firstChars(2)).isEmpty)
+    assert((firstChars(2) intersect firstChars(3)).isEmpty)
   }
 
 }
