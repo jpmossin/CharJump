@@ -15,7 +15,7 @@ class CharJumpAction extends AnAction("CharJump") {
     currentCharJump.foreach(_.stop())
     val editor = event.getData(CommonDataKeys.EDITOR)
     if (editor != null) {
-      val charJumpRunner = new CharJumpRunner(keyPressedHandler, editor)
+      val charJumpRunner = new CharJumpRunner(typingCanceller, editor)
       charJumpRunner.runCharJump()
       currentCharJump = Some(charJumpRunner)
     }
@@ -25,7 +25,7 @@ class CharJumpAction extends AnAction("CharJump") {
 object CharJumpAction {
 
   private val typedAction = EditorActionManager.getInstance.getTypedAction
-  private val keyPressedHandler = new JumpKeyPressedHandler(typedAction.getHandler)
-  typedAction.setupHandler(keyPressedHandler)
+  private val typingCanceller = new TypingCanceller(typedAction.getHandler)
+  typedAction.setupHandler(typingCanceller)
 
 }

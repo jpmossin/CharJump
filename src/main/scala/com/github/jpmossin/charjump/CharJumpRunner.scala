@@ -1,14 +1,18 @@
 package com.github.jpmossin.charjump
 
+import java.awt.event.{KeyAdapter, KeyEvent, KeyListener}
+
 import com.intellij.openapi.editor.Editor
 
 
 /**
   * The highlevel flow and logic of a single CharJump activation.
   */
-class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
+class CharJumpRunner(typingCanceller: TypingCanceller, editor: Editor) {
 
   private val highlighter = new PositionHighlighter(editor)
+
+  private var jumpKeyPressedListener: KeyListener = _
 
   /**
     * Runs a new CharJump search by going through the following states:
@@ -25,11 +29,13 @@ class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
   }
 
   def stop(): Unit = {
-    keyPressedHandler.removeKeyPressedListener()
     highlighter.clearCurrentHighlighting()
+    editor.getContentComponent.removeKeyListener(jumpKeyPressedListener)
+    typingCanceller.setActive(false)
   }
 
   private def onSearchKeyPressed(searchKey: Char): Unit = {
+    typingCanceller.setActive(true)
     val positionSearcher = new MatchingPositionSearcher(editor)
     val keysForMatchingPositions = positionSearcher.getKeysForMatchingPositions(searchKey)
     highlightMatchingPositions(keysForMatchingPositions)
@@ -39,12 +45,20 @@ class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
     if (positionKeys.nonEmpty) {
       val nextCharsToShow = positionKeys.mapValues(_.head)
       highlighter.showMatchingPositions(nextCharsToShow)
-      keyPressedHandler.setKeyPressedListener(pressedChar => {
-        highlighter.clearCurrentHighlighting()
-        jumpOrHighlightRemaining(positionKeys, pressedChar)
-      })
+      jumpKeyPressedListener = createKeyListenerForNextChar(positionKeys)
+      editor.getContentComponent.addKeyListener(jumpKeyPressedListener)
     } else {
       stop()
+    }
+  }
+
+  def createKeyListenerForNextChar(positionKeys: Map[Int, Seq[Char]]) = {
+    new KeyAdapter {
+      override def keyTyped(e: KeyEvent): Unit = {
+        editor.getContentComponent.removeKeyListener(this)
+        highlighter.clearCurrentHighlighting()
+        jumpOrHighlightRemaining(positionKeys, e.getKeyChar)
+      }
     }
   }
 
@@ -61,8 +75,8 @@ class CharJumpRunner(keyPressedHandler: JumpKeyPressedHandler, editor: Editor) {
   }
 
   private def jump(position: Int): Unit = {
-    stop()
     editor.getCaretModel.moveToOffset(position)
+    stop()
   }
 
 }
