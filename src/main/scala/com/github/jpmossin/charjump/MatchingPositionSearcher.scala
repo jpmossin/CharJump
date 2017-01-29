@@ -26,9 +26,9 @@ class MatchingPositionSearcher(editor: Editor) {
     val matchingPositions = editor.getDocument.getCharsSequence
       .subSequence(startOffset, endOffset).toString
       .zipWithIndex
-      .filter({ case (chr, index) => chr.toLower == keyCharLow })
-      .map({ case (chr, index) => index + startOffset })
-      .sortBy(relativeOffset => Math.abs(relativeOffset - caretOffset)) // Simple heuristic for prefering single-key jumps for the closest positions.
+      .filter({ case (chr, _) => chr.toLower == keyCharLow })
+      .map({ case (_, index) => index + startOffset })
+      .sortBy(relativeOffset => Math.abs(relativeOffset - caretOffset)) // Simple heuristic for preferring single-key jumps for the closest positions.
     matchingPositions
   }
 
@@ -67,7 +67,7 @@ object MatchingPositionSearcher {
   // is a length one sequence of just 'a', no length two or length three sequences
   // can start with 'a', since then when the users presses 'a' to jump we would not
   // know whether to jump to the length one sequence or continue with the length 2 sequences.
-  def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
+  private def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
     var currentIndex = 0
     var jumpKeys = List[List[Char]]()
     for (_ <- positions.indices) {

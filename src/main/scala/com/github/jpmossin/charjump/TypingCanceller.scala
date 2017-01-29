@@ -6,7 +6,7 @@ import com.intellij.openapi.editor.actionSystem.TypedActionHandler
 
 /**
   * A TypingCanceller is hooked on to the chain of TypedActionHandlers that are executed
-  * on keypress in an editor to suppress changes in the document when charjump is
+  * on keypress in an editor to suppress changes in the document when CharJump is
   * activated.
   */
 class TypingCanceller(nextHandler: TypedActionHandler) extends TypedActionHandler {

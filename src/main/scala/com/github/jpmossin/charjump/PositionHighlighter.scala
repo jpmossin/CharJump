@@ -5,7 +5,6 @@ import javax.swing.SwingUtilities
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
-import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.openapi.editor.impl.EditorImpl
 import com.intellij.ui.awt.RelativePoint
 
@@ -45,7 +44,6 @@ class PositionHighlighter(editor: Editor) {
   private def addTargetCanvas(targetCanvas: JumpTargetsCanvas): Unit = {
     val contentComponent = editor.getContentComponent
     contentComponent.add(targetCanvas)
-    val viewport = editor.asInstanceOf[EditorEx].getScrollPane.getViewport
     val rootPane = editor.getComponent.getRootPane
     targetCanvas.setBounds(0, 0, rootPane.getWidth, rootPane.getHeight)
     val locationOnScreen = SwingUtilities.convertPoint(targetCanvas, targetCanvas.getLocation(), rootPane)

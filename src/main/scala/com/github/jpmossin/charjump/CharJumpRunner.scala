@@ -52,7 +52,7 @@ class CharJumpRunner(typingCanceller: TypingCanceller, editor: Editor) {
     }
   }
 
-  def createKeyListenerForNextChar(positionKeys: Map[Int, Seq[Char]]) = {
+  private def createKeyListenerForNextChar(positionKeys: Map[Int, Seq[Char]]) = {
     new KeyAdapter {
       override def keyTyped(e: KeyEvent): Unit = {
         editor.getContentComponent.removeKeyListener(this)
@@ -65,9 +65,9 @@ class CharJumpRunner(typingCanceller: TypingCanceller, editor: Editor) {
   private def jumpOrHighlightRemaining(positionKeys: Map[Int, Seq[Char]], pressedChar: Char): Unit = {
     val byFirstChar = positionKeys.groupBy({ case (_, jumpChars) => jumpChars.head })
     val forPressedChar = byFirstChar.getOrElse(pressedChar, Map())
-    val singleMatchingPosition = forPressedChar.find({ case (pos, chars) => chars.size == 1})
+    val singleMatchingPosition = forPressedChar.find({ case (_, chars) => chars.size == 1})
     singleMatchingPosition match {
-      case Some((pos, chars)) => jump(pos)
+      case Some((pos, _)) => jump(pos)
       case _ =>
         val remainingJumpChars = forPressedChar.mapValues(_.tail)
         highlightMatchingPositions(remainingJumpChars)
