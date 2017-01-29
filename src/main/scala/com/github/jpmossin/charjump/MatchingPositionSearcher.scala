@@ -35,8 +35,14 @@ class MatchingPositionSearcher(editor: Editor) {
   private def currentVisibleOffsets(): (Int, Int) = {
     val visualArea = editor.getScrollingModel.getVisibleArea
     val firstLine = pixelPositionToLogicalLine(visualArea.y) - 1
-    val lastLine = pixelPositionToLogicalLine(visualArea.y + visualArea.height)
-    (lineStartOffset(firstLine), lineStartOffset(lastLine) - 1)
+    val firstNonVisibleLine = pixelPositionToLogicalLine(visualArea.y + visualArea.height)
+    val lastLineVisible = firstNonVisibleLine >= editor.getDocument.getLineCount
+    val endOffset = if (lastLineVisible) {
+      editor.getDocument.getCharsSequence.length()
+    } else {
+      lineStartOffset(firstNonVisibleLine) - 1
+    }
+    (lineStartOffset(firstLine), endOffset)
   }
 
 
