@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin url="https://github.com/jpmossin">
   <id>com.github.jpmossin</id>
   <name>CharJump</name>
   <version>1.1.2</version>
