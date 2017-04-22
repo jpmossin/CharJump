@@ -1,10 +1,11 @@
 package com.github.jpmossin.charjump
 
 import com.github.jpmossin.charjump.CharJumpAction._
-import com.intellij.openapi.actionSystem.{AnAction, AnActionEvent, CommonDataKeys}
+import com.intellij.openapi.actionSystem.{AnActionEvent, CommonDataKeys}
 import com.intellij.openapi.editor.actionSystem.EditorActionManager
+import com.intellij.openapi.project.DumbAwareAction
 
-class CharJumpAction extends AnAction("CharJump") {
+class CharJumpAction extends DumbAwareAction("CharJump") {
 
   private var currentCharJump: Option[CharJumpRunner] = None
 
