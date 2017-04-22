@@ -73,7 +73,7 @@ object MatchingPositionSearcher {
   // is a length one sequence of just 'a', no length two or length three sequences
   // can start with 'a', since then when the users presses 'a' to jump we would not
   // know whether to jump to the length one sequence or continue with the length 2 sequences.
-  private def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
+  def mapPositionsToJumpKeys(positions: Seq[Int]): Map[Int, Seq[Char]] = {
     var currentIndex = 0
     var jumpKeys = List[List[Char]]()
     for (_ <- positions.indices) {
