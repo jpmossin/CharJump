@@ -20,7 +20,10 @@ Positions close to the current caret position can be reached by a single charact
 while a two (or in extreme cases three) characters are needed for positions further away when there are
 many matching positions.
  
-After entering a target character, the jump can be aborted by pressing Space.  
+After entering a target character, the jump can be aborted by pressing Space.
+
+##### Configuration
+The highlight color for the jump targets can be configured from settings -> tools -> CharJump. 
 
 ##### Development
 Build with:
