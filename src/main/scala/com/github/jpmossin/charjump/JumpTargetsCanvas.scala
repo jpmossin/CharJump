@@ -3,6 +3,7 @@ package com.github.jpmossin.charjump
 import java.awt._
 import javax.swing.JComponent
 
+import com.github.jpmossin.charjump.config.ConfigVariable
 import com.intellij.openapi.editor.colors.EditorFontType
 import com.intellij.openapi.editor.impl.EditorImpl
 
@@ -13,7 +14,9 @@ import com.intellij.openapi.editor.impl.EditorImpl
   *
   * (note: we actually need an EditorImpl and not an Editor, to get some font info.)
   */
-class JumpTargetsCanvas(charsToPosition: Seq[(Point, Char)], editor: EditorImpl) extends JComponent {
+class JumpTargetsCanvas(charsToPosition: Seq[(Point, Char)],
+                        editor: EditorImpl,
+                        highlightColor: ConfigVariable[Color]) extends JComponent {
 
   private val editorFont = editor.getColorsScheme.getFont(EditorFontType.BOLD)
   private val lineHeight = editor.getLineHeight
@@ -24,15 +27,16 @@ class JumpTargetsCanvas(charsToPosition: Seq[(Point, Char)], editor: EditorImpl)
     val g2d = g.asInstanceOf[Graphics2D]
 
     g2d.setFont(editorFont)
+    val color = highlightColor.getSavedValue
     charsToPosition.foreach({ case (position, jumpChar) =>
-      drawChar(g2d, jumpChar, position)
+      drawChar(g2d, jumpChar, position, color)
     })
   }
 
-  def drawChar(g2d: Graphics2D, jumpChar: Char, position: Point): Unit = {
+  def drawChar(g2d: Graphics2D, jumpChar: Char, position: Point, highlightColor: Color): Unit = {
     g2d.setColor(editor.getBackgroundColor)
     g2d.fillRect(position.x, position.y, charWidth, lineHeight + 1)
-    g2d.setColor(Color.RED)
+    g2d.setColor(highlightColor)
     g2d.drawString(jumpChar.toString, position.x, position.y + editorFont.getSize)
   }
 

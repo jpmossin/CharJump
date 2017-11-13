@@ -2,15 +2,16 @@ package com.github.jpmossin.charjump
 
 import java.awt.event.{KeyAdapter, KeyEvent, KeyListener}
 
+import com.github.jpmossin.charjump.config.CharJumpConfigVariables
 import com.intellij.openapi.editor.Editor
 
 
 /**
   * The highlevel flow and logic of a single CharJump activation.
   */
-class CharJumpRunner(typingCanceller: TypingCanceller, editor: Editor) {
+class CharJumpRunner(typingCanceller: TypingCanceller, editor: Editor, configVariables: CharJumpConfigVariables) {
 
-  private val highlighter = new PositionHighlighter(editor)
+  private val highlighter = new PositionHighlighter(editor, configVariables.highlightColor)
 
   private var jumpKeyPressedListener: KeyListener = _
 

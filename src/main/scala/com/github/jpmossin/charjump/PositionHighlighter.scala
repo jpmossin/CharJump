@@ -1,8 +1,9 @@
 package com.github.jpmossin.charjump
 
-import java.awt.Point
+import java.awt.{Color, Point}
 import javax.swing.SwingUtilities
 
+import com.github.jpmossin.charjump.config.ConfigVariable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.editor.impl.EditorImpl
@@ -11,7 +12,7 @@ import com.intellij.ui.awt.RelativePoint
 /**
   * Helper for highlighting matching positions in the document.
   */
-class PositionHighlighter(editor: Editor) {
+class PositionHighlighter(editor: Editor, highlightColor: ConfigVariable[Color]) {
 
   var lastShownTargetCanvas: Option[JumpTargetsCanvas] = None
 
@@ -24,7 +25,7 @@ class PositionHighlighter(editor: Editor) {
     ApplicationManager.getApplication.invokeLater(new Runnable {
       override def run(): Unit = {
         val targetPoints = matchingPositions.map({case (pos, char) => (offsetToPoint(pos), char)})
-        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints.toSeq, editor.asInstanceOf[EditorImpl]))
+        lastShownTargetCanvas = Some(new JumpTargetsCanvas(targetPoints.toSeq, editor.asInstanceOf[EditorImpl], highlightColor))
         addTargetCanvas(lastShownTargetCanvas.get)
       }
     })

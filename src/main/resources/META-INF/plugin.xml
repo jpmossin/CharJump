@@ -28,4 +28,12 @@
     </action>
   </actions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable
+                id="charjump.config"
+                displayName="CharJump"
+                groupId="tools"
+                instance="com.github.jpmossin.charjump.config.CharJumpConfig"/>
+    </extensions>
+
 </idea-plugin>
